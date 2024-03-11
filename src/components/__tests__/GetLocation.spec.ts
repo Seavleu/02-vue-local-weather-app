@@ -21,9 +21,16 @@ describe("GetLocation", () => {
       };
       successCallback(position);
     });
-    global.navigator.geolocation = {
-      getCurrentPosition: mockGeoLocation,
-    };
+    // global.navigator.geolocation = {
+    //   getCurrentPosition: mockGeoLocation,
+    // };
+    Object.defineProperty(global.navigator, 'geolocation', {
+      value: {
+        getCurrentPosition: mockGeoLocation,
+      },
+      writable: true
+    });
+    
 
     const wrapper = await shallowMount(GetLocation);
     expect(wrapper.vm.coords).toEqual({
@@ -37,12 +44,22 @@ describe("GetLocation", () => {
       const error = new Error("User denied geolocation access");
       errorCallback(error);
     });
-    global.navigator.geolocation = {
-      getCurrentPosition: mockGeoLocation,
-    };
+    // global.navigator.geolocation = {
+    //   getCurrentPosition: mockGeoLocation,
+    // };
+    Object.defineProperty(global.navigator, 'geolocation', {
+      value: {
+        getCurrentPosition: mockGeoLocation,
+      },
+      writable: true
+    });
+    
 
     const wrapper = await shallowMount(GetLocation);
+    // await wrapper.vm.$nextTick(); // Ensure Vue reacts to the change
+
     expect(wrapper.vm.geolocationBlockedByUser).toEqual(true);
     expect(wrapper.html()).toContain("User denied access");
+    
   });
 });
