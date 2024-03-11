@@ -1,0 +1,19 @@
+<script lang="ts" setup>
+import { computed } from "vue";
+interface Props {
+    degrees: number;
+}
+const props = defineProps<Props>();
+const windStyle = computed(() => ({
+    transform: "rotate(" + props.degrees + "deg)",
+}));
+</script>
+
+
+<template>
+    <span>
+        <!-- data-testid="direction" is our testing point -->
+        <!-- <span aria-hidden="true" class="inline-block" data-testid="direction" :style="windStyle">⬇</span> -->
+        <span class="sr-only" data-testid="direction-sr">{{ degrees }} degree </span>
+    </span>
+</template>
